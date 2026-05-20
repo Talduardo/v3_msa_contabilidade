@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MSA | Martins Soares & Associados — Contabilidade e Consultoria</title>
+  <meta name="description" content="MSA — Parceiros de verdade para a saúde financeira da sua empresa. Contabilidade, planejamento tributário, DP e consultoria em Quixeramobim, CE."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --navy:#051C3F;--navy2:#073673;--blue:#0A4EC7;
+      --sky:#D0DCF1;--gold:#C8A84B;--gold-l:#F0D98C;
+      --white:#FFFFFF;--off:#F5F7FC;--gray:#6B7A99;--dark:#020D1F;
+      --ff-display:'Cormorant Garamond',Georgia,serif;
+      --ff-body:'DM Sans',system-ui,sans-serif;
+      --nav-h:76px;--r:10px;--r-lg:18px;--r-pill:9999px;
+      --sh-sm:0 2px 10px rgba(5,28,63,.10);
+      --sh-md:0 8px 36px rgba(5,28,63,.16);
+      --sh-lg:0 24px 72px rgba(5,28,63,.24);
+      --ease:cubic-bezier(.4,0,.2,1);--t:.3s var(--ease);
+      /* spring: overshoots slightly then settles */
+      --spring:cubic-bezier(.34,1.45,.64,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;font-size:16px}
+    body{font-family:var(--ff-body);color:var(--navy);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+    button{cursor:pointer;font-family:inherit;border:none;background:none}
+    :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    /* ══════════════════════════════════════════
+       PUZZLE ANIMATION SYSTEM
+       Cada peça entra de uma direção diferente
+       com rotação e "encaixa" com mola (spring)
+    ══════════════════════════════════════════ */
+    @keyframes fromTL{0%{opacity:0;transform:translate(-70px,-70px) rotate(-9deg) scale(.85)}65%{transform:translate(5px,5px) rotate(.6deg) scale(1.02)}100%{opacity:1;transform:none}}
+    @keyframes fromTR{0%{opacity:0;transform:translate(70px,-70px) rotate(9deg) scale(.85)}65%{transform:translate(-5px,5px) rotate(-.6deg) scale(1.02)}100%{opacity:1;transform:none}}
+    @keyframes fromBL{0%{opacity:0;transform:translate(-70px,70px) rotate(7deg) scale(.87)}65%{transform:translate(4px,-4px) rotate(-.4deg) scale(1.02)}100%{opacity:1;transform:none}}
+    @keyframes fromBR{0%{opacity:0;transform:translate(70px,70px) rotate(-7deg) scale(.87)}65%{transform:translate(-4px,-4px) rotate(.4deg) scale(1.02)}100%{opacity:1;transform:none}}
+    @keyframes fromL{0%{opacity:0;transform:translateX(-90px) rotate(-5deg) scale(.9)}65%{transform:translateX(6px) rotate(.4deg) scale(1.01)}100%{opacity:1;transform:none}}
+    @keyframes fromR{0%{opacity:0;transform:translateX(90px) rotate(5deg) scale(.9)}65%{transform:translateX(-6px) rotate(-.4deg) scale(1.01)}100%{opacity:1;transform:none}}
+    @keyframes fromT{0%{opacity:0;transform:translateY(-70px) rotate(-4deg) scale(.9)}65%{transform:translateY(5px) rotate(.3deg) scale(1.01)}100%{opacity:1;transform:none}}
+    @keyframes fromB{0%{opacity:0;transform:translateY(70px) rotate(4deg) scale(.9)}65%{transform:translateY(-5px) rotate(-.3deg) scale(1.01)}100%{opacity:1;transform:none}}
+    @keyframes fromC{0%{opacity:0;transform:scale(.7) rotate(-3deg)}65%{transform:scale(1.04) rotate(.5deg)}100%{opacity:1;transform:none}}
+    /* word-flip: cada palavra do h1 rotaciona no eixo Y */
+    @keyframes wordFlip{0%{opacity:0;transform:rotateY(-90deg) translateX(-20px)}60%{transform:rotateY(6deg) translateX(3px)}100%{opacity:1;transform:none}}
+    /* clip-reveal: revela de baixo para cima (para tags / labels) */
+    @keyframes clipUp{0%{opacity:0;clip-path:inset(100% 0 0 0)}100%{opacity:1;clip-path:inset(0% 0 0 0)}}
+    /* scale-snap: cards encaixam com bounce */
+    @keyframes scaleSnap{0%{opacity:0;transform:scale(.6) rotate(-6deg)}60%{transform:scale(1.05) rotate(.8deg)}80%{transform:scale(.98) rotate(-.2deg)}100%{opacity:1;transform:none}}
+    /* slide-reveal: para barras e linhas */
+    @keyframes lineGrow{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+
+    /* Estado inicial — todas as peças invisíveis */
+    [data-p]{opacity:0}
+
+    /* Quando recebe .snap, executa a animação correspondente */
+    [data-p="tl"].snap{animation:fromTL .75s var(--spring) both}
+    [data-p="tr"].snap{animation:fromTR .75s var(--spring) both}
+    [data-p="bl"].snap{animation:fromBL .75s var(--spring) both}
+    [data-p="br"].snap{animation:fromBR .75s var(--spring) both}
+    [data-p="l"].snap{animation:fromL .7s var(--spring) both}
+    [data-p="r"].snap{animation:fromR .7s var(--spring) both}
+    [data-p="t"].snap{animation:fromT .65s var(--spring) both}
+    [data-p="b"].snap{animation:fromB .65s var(--spring) both}
+    [data-p="c"].snap{animation:fromC .7s var(--spring) both}
+    [data-p="word"].snap{animation:wordFlip .6s var(--spring) both}
+    [data-p="clip"].snap{animation:clipUp .55s var(--ease) both}
+    [data-p="card"].snap{animation:scaleSnap .8s var(--spring) both}
+
+    /* Delays escalonados */
+    [data-pd="0"].snap{animation-delay:0s}
+    [data-pd="1"].snap{animation-delay:.08s}
+    [data-pd="2"].snap{animation-delay:.16s}
+    [data-pd="3"].snap{animation-delay:.24s}
+    [data-pd="4"].snap{animation-delay:.32s}
+    [data-pd="5"].snap{animation-delay:.40s}
+    [data-pd="6"].snap{animation-delay:.50s}
+    [data-pd="7"].snap{animation-delay:.60s}
+    [data-pd="8"].snap{animation-delay:.72s}
+    [data-pd="9"].snap{animation-delay:.86s}
+    [data-pd="10"].snap{animation-delay:1.0s}
+
+    /* ── BUTTONS ── */
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.9rem;border-radius:var(--r-pill);font-size:.9rem;font-weight:600;transition:all var(--t);white-space:nowrap;border:1.5px solid transparent}
+    .btn-gold{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+    .btn-gold:hover{background:var(--gold-l);border-color:var(--gold-l);transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,168,75,.35)}
+    .btn-outline-white{background:transparent;color:var(--white);border-color:rgba(255,255,255,.35)}
+    .btn-outline-white:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.6);transform:translateY(-2px)}
+    .btn-navy{background:var(--navy);color:var(--white);border-color:var(--navy)}
+    .btn-navy:hover{background:var(--navy2);border-color:var(--navy2);transform:translateY(-2px);box-shadow:var(--sh-md)}
+    .btn-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:var(--white);border:none;box-shadow:0 8px 28px rgba(37,211,102,.35)}
+    .btn-wa:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(37,211,102,.45)}
+
+    /* ── TAGS ── */
+    .tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:var(--r-pill)}
+    .tag-gold{background:rgba(200,168,75,.12);color:var(--gold);border:1px solid rgba(200,168,75,.3)}
+    .tag-sky{background:rgba(208,220,241,.15);color:var(--sky);border:1px solid rgba(208,220,241,.25)}
+    .tag-navy{background:var(--sky);color:var(--navy2);border:1px solid rgba(7,54,115,.15)}
+    .tag .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+    /* ── NAVBAR ── */
+    .navbar{position:fixed;top:0;inset-inline:0;z-index:1000;height:var(--nav-h);display:flex;align-items:center;padding:0 clamp(1.5rem,5vw,3rem);transition:background var(--t),box-shadow var(--t)}
+    .navbar.scrolled{background:rgba(5,28,63,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:var(--sh-md)}
+    .nav-in{width:100%;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+    .nav-logo img{height:58px;width:auto;object-fit:contain}
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .nav-links a{color:rgba(255,255,255,.8);font-size:.85rem;font-weight:500;letter-spacing:.02em;position:relative;transition:color var(--t)}
+    .nav-links a::after{content:'';position:absolute;inset-inline:0;bottom:-4px;height:1.5px;background:var(--gold);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
+    .nav-links a:hover{color:var(--white)}
+    .nav-links a:hover::after{transform:scaleX(1)}
+    .nav-cta{padding:.6rem 1.4rem;font-size:.8rem}
+    .hamburger{display:none;flex-direction:column;gap:5px;padding:.4rem;cursor:pointer}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px;transition:all var(--t)}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-mob{display:none;position:fixed;top:var(--nav-h);inset-inline:0;background:var(--navy);padding:1.5rem;flex-direction:column;gap:.75rem;z-index:999;box-shadow:var(--sh-lg)}
+    .nav-mob.open{display:flex}
+    .nav-mob a{color:rgba(255,255,255,.82);font-size:1rem;font-weight:500;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav-mob a:last-child{border:none}
+
+    /* ══ HERO ══ */
+    .hero{position:relative;min-height:100svh;display:grid;grid-template-rows:1fr auto;overflow:hidden;background:var(--dark)}
+    .hero-bg{position:absolute;inset:0;z-index:0}
+    .hero-bg-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;opacity:.08}
+    .hero-grad{position:absolute;inset:0;background:radial-gradient(ellipse 75% 65% at 20% 55%,rgba(10,78,199,.45) 0%,transparent 55%),radial-gradient(ellipse 55% 70% at 80% 20%,rgba(5,28,63,.7) 0%,transparent 60%),linear-gradient(160deg,#020D1F 0%,#051C3F 55%,#020D1F 100%)}
+    .hero-lines{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(208,220,241,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(208,220,241,.035) 1px,transparent 1px);background-size:56px 56px}
+    .hero-accent{position:absolute;top:0;right:0;width:45%;height:100%;clip-path:polygon(20% 0%,100% 0%,100% 100%,0% 100%);background:linear-gradient(145deg,transparent,rgba(10,78,199,.12) 50%,rgba(200,168,75,.06));border-left:1px solid rgba(208,220,241,.06);z-index:0}
+    .hero-in{position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;padding:calc(var(--nav-h) + 5rem) clamp(1.5rem,5vw,3rem) 4rem;display:grid;grid-template-columns:1.05fr 0.95fr;align-items:center;gap:3.5rem}
+    .hero-content{max-width:580px}
+    .hero-eyebrow{display:flex;align-items:center;gap:.75rem;margin-bottom:1.75rem}
+    .hero-eyebrow-line{width:32px;height:1.5px;background:var(--gold);border-radius:2px;transform-origin:left;animation:lineGrow .6s var(--ease) .2s both}
+    .hero-eyebrow span{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+    /* H1 — cada linha é uma peça independente */
+    .hero-h1{font-family:var(--ff-display);font-size:clamp(2.8rem,5.5vw,4.6rem);font-weight:700;line-height:1.04;color:var(--white);letter-spacing:-.01em;margin-bottom:1.25rem}
+    .hero-h1 .w{display:block;perspective:800px}
+    .hero-h1 em{font-style:italic;color:var(--gold)}
+    .hero-sub{font-size:clamp(.9rem,1.4vw,1.05rem);color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:2rem;max-width:470px}
+    .hero-sub strong{color:rgba(255,255,255,.8);font-weight:500}
+    .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.5rem}
+    .hero-divider{width:100%;height:1px;background:rgba(255,255,255,.08);margin-bottom:1.75rem}
+    .hero-trust{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+    .hero-trust-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.45);font-weight:400}
+    .hero-trust-item svg{flex-shrink:0;opacity:.5}
+    /* Card hero */
+    .hero-card{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(208,220,241,.12);border-radius:20px;padding:2rem;box-shadow:0 28px 72px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);position:relative;overflow:hidden}
+    .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.4),transparent)}
+    .hc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem}
+    .hc-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(208,220,241,.4)}
+    .hc-badge{display:flex;align-items:center;gap:.35rem;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:var(--r-pill);padding:.25rem .7rem;font-size:.68rem;font-weight:700;color:#4ade80}
+    .hc-badge-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:pulseG 2s ease infinite}
+    @keyframes pulseG{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 6px rgba(74,222,128,0)}}
+    .hc-big{font-family:var(--ff-display);font-size:3rem;font-weight:700;color:var(--white);line-height:1;letter-spacing:-.02em;margin-bottom:.25rem}
+    .hc-big span{font-size:1.4rem;color:rgba(208,220,241,.5)}
+    .hc-desc{font-size:.8rem;color:rgba(208,220,241,.45);margin-bottom:1.5rem}
+    .hc-bars{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.5rem}
+    .hc-bar-row{display:flex;flex-direction:column;gap:.3rem}
+    .hc-bar-top{display:flex;justify-content:space-between;font-size:.72rem}
+    .hc-bar-top span:first-child{color:rgba(208,220,241,.55)}
+    .hc-bar-top span:last-child{color:var(--white);font-weight:600}
+    .hc-bar-track{height:5px;background:rgba(208,220,241,.08);border-radius:3px;overflow:hidden}
+    .hc-bar-fill{height:100%;border-radius:3px;animation:barGrow .9s var(--ease) forwards}
+    .hc-bar-fill.b1{width:0;background:linear-gradient(90deg,#4ade80,#22c55e);animation-delay:.2s}
+    .hc-bar-fill.b2{width:0;background:linear-gradient(90deg,#60a5fa,#3b82f6);animation-delay:.4s}
+    .hc-bar-fill.b3{width:0;background:linear-gradient(90deg,var(--gold),var(--gold-l));animation-delay:.6s}
+    @keyframes barGrow{to{width:var(--w)}}
+    .hc-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding-top:1.2rem;border-top:1px solid rgba(208,220,241,.07)}
+    .hc-kpi{text-align:center}
+    .hc-kpi-val{font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--white);display:block;line-height:1;margin-bottom:.2rem}
+    .hc-kpi-val.green{color:#4ade80}
+    .hc-kpi-lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(208,220,241,.35)}
+    .hero-float{position:absolute;background:rgba(5,28,63,.85);backdrop-filter:blur(14px);border:1px solid rgba(208,220,241,.15);border-radius:14px;padding:.8rem 1.1rem;box-shadow:0 12px 40px rgba(0,0,0,.3);display:flex;align-items:center;gap:.6rem}
+    .hf-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .hf-txt strong{display:block;font-size:.78rem;font-weight:700;color:var(--white);line-height:1.2}
+    .hf-txt span{font-size:.65rem;color:rgba(208,220,241,.5)}
+    .hero-float-a{top:-20px;right:-20px;animation:fc 7s ease-in-out infinite}
+    .hero-float-b{bottom:-20px;left:-20px;animation:fc 9s ease-in-out infinite reverse}
+    @keyframes fc{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .hero-ticker{position:relative;z-index:1;border-top:1px solid rgba(208,220,241,.07);padding:.65rem 0;overflow:hidden}
+    .ticker-wrap{display:flex;gap:2.5rem;width:max-content;animation:tick 30s linear infinite;white-space:nowrap}
+    .ticker-item{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:600;color:rgba(208,220,241,.38);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+    .ticker-item .td{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.6}
+    @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* ══ PILARES ══ */
+    .pilares{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--white)}
+    .pilares-in{max-width:1200px;margin:0 auto}
+    .sec-head{text-align:center;max-width:640px;margin:0 auto 3.5rem}
+    .sec-head .tag{margin-bottom:1.25rem}
+    .sec-h2{font-family:var(--ff-display);font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:700;color:var(--navy);line-height:1.18;margin-bottom:.85rem}
+    .sec-p{font-size:1rem;color:var(--gray);line-height:1.75}
+    .pilares-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .pilar-card{background:var(--off);border-radius:var(--r-lg);padding:2rem;border:1px solid rgba(5,28,63,.06);transition:transform var(--t),box-shadow var(--t),border-color var(--t);position:relative;overflow:hidden}
+    .pilar-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));border-radius:0 0 var(--r-lg) var(--r-lg);transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
+    .pilar-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(5,28,63,.1)}
+    .pilar-card:hover::after{transform:scaleX(1)}
+    .pilar-num{font-family:var(--ff-display);font-size:3.5rem;font-weight:700;line-height:1;color:rgba(5,28,63,.06);margin-bottom:.75rem}
+    .pilar-icon{width:52px;height:52px;background:var(--navy);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+    .pilar-title{font-family:var(--ff-display);font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:.65rem;line-height:1.2}
+    .pilar-text{font-size:.9rem;color:var(--gray);line-height:1.75}
+    .pilar-highlight{display:inline-block;margin-top:1rem;padding:.5rem 1rem;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.2);border-radius:8px;font-size:.8rem;font-weight:600;color:var(--gold);line-height:1.4}
+    .pilar-card.featured{background:var(--navy);border-color:var(--navy)}
+    .pilar-card.featured .pilar-num{color:rgba(255,255,255,.07)}
+    .pilar-card.featured .pilar-title{color:var(--white)}
+    .pilar-card.featured .pilar-text{color:rgba(208,220,241,.62)}
+    .pilar-card.featured .pilar-highlight{background:rgba(200,168,75,.12);border-color:rgba(200,168,75,.3);color:var(--gold-l)}
+    .pilar-card.featured::after{background:linear-gradient(90deg,var(--gold-l),var(--gold))}
+
+    /* ══ SERVIÇOS ══ */
+    .servicos{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--off)}
+    .servicos-in{max-width:1200px;margin:0 auto}
+    .servicos-layout{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:0}
+    .serv-block{background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-sm);border:1px solid rgba(5,28,63,.06)}
+    .serv-block-head{padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid rgba(5,28,63,.06)}
+    .serv-block-head.op{background:var(--navy)}
+    .serv-block-head.st{background:linear-gradient(135deg,var(--gold),#a87c2a)}
+    .serv-block-ico{width:42px;height:42px;border-radius:9px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .serv-block-title{font-family:var(--ff-display);font-size:1.15rem;font-weight:700;color:var(--white);line-height:1.2}
+    .serv-block-sub{font-size:.75rem;color:rgba(255,255,255,.55);margin-top:.1rem}
+    .serv-list{padding:1.25rem 0}
+    .serv-item{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 2rem;transition:background var(--t)}
+    .serv-item:hover{background:rgba(5,28,63,.025)}
+    .serv-item-ico{width:34px;height:34px;background:var(--sky);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem}
+    .serv-item-body strong{display:block;font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.3;margin-bottom:.2rem}
+    .serv-item-body span{font-size:.8rem;color:var(--gray);line-height:1.6}
+
+    /* ══ MANIFESTO ══ */
+    .manifesto{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--dark);position:relative;overflow:hidden}
+    .manifesto::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(10,78,199,.2),transparent 60%),radial-gradient(ellipse 50% 50% at 10% 30%,rgba(5,28,63,.8),transparent 55%);z-index:0}
+    .manifesto-lines{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(208,220,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(208,220,241,.03) 1px,transparent 1px);background-size:56px 56px}
+    .manifesto-in{position:relative;z-index:1;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:4rem;align-items:center}
+    .manifesto-photo-wrap{flex-shrink:0;width:320px}
+    .manifesto-photo-fallback{width:100%;aspect-ratio:3/4;border-radius:var(--r-lg);background:linear-gradient(145deg,rgba(10,78,199,.3),rgba(5,28,63,.6));border:1px solid rgba(208,220,241,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+    .manifesto-photo-fallback .initials{font-family:var(--ff-display);font-size:4rem;font-weight:700;color:rgba(208,220,241,.5)}
+    .manifesto-photo-cap{margin-top:.85rem;text-align:center}
+    .manifesto-photo-cap strong{display:block;font-size:.9rem;font-weight:700;color:var(--white)}
+    .manifesto-photo-cap span{font-size:.75rem;color:rgba(208,220,241,.45)}
+    .manifesto-quote-mark{font-family:var(--ff-display);font-size:6rem;line-height:.7;color:rgba(200,168,75,.25);margin-bottom:.5rem;display:block}
+    .manifesto-quote{font-family:var(--ff-display);font-size:clamp(1.3rem,2.5vw,1.85rem);font-style:italic;color:rgba(255,255,255,.9);line-height:1.55;margin-bottom:1.75rem}
+    .manifesto-text{font-size:.95rem;color:rgba(208,220,241,.55);line-height:1.8;margin-bottom:2rem;max-width:520px}
+    .manifesto-values{display:flex;flex-wrap:wrap;gap:.6rem}
+    .manifesto-val{display:flex;align-items:center;gap:.4rem;font-size:.75rem;font-weight:600;color:rgba(208,220,241,.65);background:rgba(208,220,241,.06);border:1px solid rgba(208,220,241,.1);border-radius:var(--r-pill);padding:.35rem .85rem}
+
+    /* ══ PROVA SOCIAL ══ */
+    .prova{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--white)}
+    .prova-in{max-width:1200px;margin:0 auto}
+    .numeros-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:4rem}
+    .num-card{background:var(--navy);border-radius:var(--r-lg);padding:2rem;text-align:center;position:relative;overflow:hidden}
+    .num-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+    .num-val{font-family:var(--ff-display);font-size:clamp(2rem,4vw,2.8rem);font-weight:700;color:var(--white);line-height:1;margin-bottom:.35rem}
+    .num-val span{color:var(--gold)}
+    .num-lbl{font-size:.78rem;color:rgba(208,220,241,.5);line-height:1.4}
+    .marquee-wrap{position:relative;overflow:hidden;margin-bottom:1rem}
+    .marquee-wrap::before,.marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none}
+    .marquee-wrap::before{left:0;background:linear-gradient(to right,var(--white),transparent)}
+    .marquee-wrap::after{right:0;background:linear-gradient(to left,var(--white),transparent)}
+    .marquee-track{display:flex;gap:1rem;width:max-content;padding:.5rem 0}
+    .marquee-track.left{animation:mLeft 38s linear infinite}
+    .marquee-track.right{animation:mRight 44s linear infinite}
+    .marquee-wrap:hover .marquee-track{animation-play-state:paused}
+    @keyframes mLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes mRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+    .client-card{flex-shrink:0;width:280px;background:var(--off);border:1px solid rgba(5,28,63,.07);border-radius:var(--r-lg);padding:1.35rem;transition:transform var(--t),box-shadow var(--t),border-color var(--t)}
+    .client-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:rgba(5,28,63,.14)}
+    .client-logo-wrap{width:100%;height:60px;background:var(--white);border:1px solid rgba(5,28,63,.06);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;overflow:hidden}
+    .client-logo-wrap img{max-height:38px;max-width:180px;object-fit:contain;opacity:.65;filter:grayscale(1);transition:all var(--t)}
+    .client-card:hover .client-logo-wrap img{opacity:.9;filter:grayscale(0)}
+    .client-placeholder{display:flex;align-items:center;gap:.5rem}
+    .client-abbr{width:38px;height:38px;border-radius:8px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-size:.85rem;font-weight:700;color:var(--sky);flex-shrink:0}
+    .client-pname{font-family:var(--ff-display);font-size:.82rem;font-weight:700;color:var(--navy2);line-height:1.3}
+    .client-name{font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:.15rem}
+    .client-seg{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:.6rem;opacity:.7}
+    .client-testimonial{font-size:.78rem;color:var(--gray);line-height:1.65;font-style:italic;border-top:1px solid rgba(5,28,63,.06);padding-top:.6rem}
+    .client-testimonial::before{content:'\201C';font-family:var(--ff-display);font-size:1rem;color:var(--gold);margin-right:.1rem}
+
+    /* ══ CONTATO — SEM FORMULÁRIO ══ */
+    .contato{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--off)}
+    .contato-in{max-width:820px;margin:0 auto}
+    .contato-h2{font-family:var(--ff-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--navy);line-height:1.2;margin:1rem 0 1rem}
+    .contato-p{font-size:.95rem;color:var(--gray);line-height:1.75;margin-bottom:2.5rem}
+    .cinfo-list{display:flex;flex-direction:column;gap:.85rem;margin-bottom:2.5rem}
+    .cinfo{display:flex;align-items:flex-start;gap:1rem;padding:1rem;background:var(--white);border-radius:var(--r);border:1px solid rgba(5,28,63,.06);transition:transform var(--t),box-shadow var(--t)}
+    .cinfo:hover{transform:translateX(5px);box-shadow:var(--sh-sm)}
+    .cinfo-ico{width:42px;height:42px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .cinfo-body strong{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.2rem}
+    .cinfo-body span{font-size:.88rem;color:var(--navy)}
+    .contato-cta{display:flex;gap:1rem;flex-wrap:wrap}
+
+    /* ── FOOTER ── */
+    footer{background:var(--dark);padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,3rem) 2rem}
+    .footer-in{max-width:1200px;margin:0 auto}
+    .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:2.5rem;border-bottom:1px solid rgba(208,220,241,.08)}
+    .footer-brand p{font-size:.82rem;color:rgba(208,220,241,.45);line-height:1.75;margin-top:.85rem;max-width:280px}
+    .footer-cnpj{font-size:.7rem;color:rgba(208,220,241,.25);margin-top:.5rem;font-family:monospace;letter-spacing:.04em}
+    .footer-col h4{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+    .footer-col li{margin-bottom:.55rem}
+    .footer-col a{font-size:.82rem;color:rgba(208,220,241,.45);transition:color var(--t)}
+    .footer-col a:hover{color:var(--sky)}
+    .footer-bottom{padding-top:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .footer-copy{font-size:.75rem;color:rgba(208,220,241,.25)}
+    .footer-legal{display:flex;gap:1.5rem}
+    .footer-legal a{font-size:.75rem;color:rgba(208,220,241,.25);transition:color var(--t)}
+    .footer-legal a:hover{color:rgba(208,220,241,.6)}
+    .footer-socials{display:flex;gap:.6rem}
+    .footer-socials a{width:34px;height:34px;background:rgba(208,220,241,.06);border:1px solid rgba(208,220,241,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all var(--t)}
+    .footer-socials a:hover{background:var(--blue);border-color:var(--blue)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1024px){
+      .hero-in{grid-template-columns:1fr;padding-top:calc(var(--nav-h) + 3rem)}
+      .hero-card,.hero-float{display:none}
+      .pilares-grid{grid-template-columns:1fr}
+      .servicos-layout{grid-template-columns:1fr}
+      .manifesto-in{grid-template-columns:1fr}
+      .manifesto-photo-wrap{width:260px}
+      .numeros-strip{grid-template-columns:repeat(2,1fr)}
+      .footer-top{grid-template-columns:1fr 1fr;gap:2rem}
+    }
+    @media(max-width:768px){
+      .nav-links,.nav-cta{display:none}
+      .hamburger{display:flex}
+      .hero-actions{flex-direction:column}
+      .hero-actions .btn{width:100%;justify-content:center}
+      .marquee-wrap::before,.marquee-wrap::after{width:50px}
+      .contato-cta{flex-direction:column}
+      .contato-cta .btn{width:100%;justify-content:center}
+    }
+    @media(max-width:480px){
+      .numeros-strip{grid-template-columns:1fr 1fr}
+      .footer-top{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar" id="navbar">
+  <div class="nav-in">
+    <a href="#inicio" class="nav-logo" aria-label="MSA">
+      <img src="logo.png" alt="MSA — Martins Soares & Associados" data-p="l" data-pd="0"/>
+    </a>
+    <nav class="nav-links" aria-label="Navegação principal">
+      <a href="#inicio"    data-p="t" data-pd="1">Início</a>
+      <a href="#pilares"   data-p="t" data-pd="2">Por Que Nós</a>
+      <a href="#servicos"  data-p="t" data-pd="3">Serviços</a>
+      <a href="#sobre-nos" data-p="t" data-pd="4">Sobre Nós</a>
+      <a href="#clientes"  data-p="t" data-pd="5">Clientes</a>
+      <a href="#contato"   data-p="t" data-pd="6">Contato</a>
+    </nav>
+    <a href="#contato" class="btn btn-gold nav-cta" data-p="r" data-pd="2">Fale Conosco</a>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<nav class="nav-mob" id="nav-mob">
+  <a href="#inicio">Início</a>
+  <a href="#pilares">Por Que Nós</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#sobre-nos">Sobre Nós</a>
+  <a href="#clientes">Clientes</a>
+  <a href="#contato">Contato</a>
+  <a href="#contato" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:.5rem">Fale Conosco</a>
+</nav>
+
+<main>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="inicio" aria-label="Seção principal">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bg-img"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-accent"></div>
+  </div>
+  <div class="hero-in">
+    <div class="hero-content">
+      <div class="hero-eyebrow" data-p="l" data-pd="0">
+        <div class="hero-eyebrow-line"></div>
+        <span>Martins Soares &amp; Associados · Quixeramobim, CE</span>
+      </div>
+      <h1 class="hero-h1">
+        <span class="w" data-p="word" data-pd="1">Juntos, construímos</span>
+        <span class="w" data-p="word" data-pd="3"><em>soluções completas</em></span>
+        <span class="w" data-p="word" data-pd="5">para o seu negócio</span>
+      </h1>
+      <p class="hero-sub" data-p="b" data-pd="5">
+        Contabilidade gerencial, gestão societária, <strong>planejamento fiscal</strong>, departamento pessoal e consultoria estratégica — tudo em um só lugar, para empresas que querem crescer com segurança.
+      </p>
+      <div class="hero-actions" data-p="bl" data-pd="6">
+        <a href="https://wa.me/5588999999999?text=Olá!%20Gostaria%20de%20uma%20consultoria%20gratuita." target="_blank" rel="noopener" class="btn btn-gold">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M15.5 12.5c-.3-.2-1.8-1-2.1-1.1-.3-.1-.5-.1-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.1-.2.2-.3.3-.5s0-.4-.1-.6C7.5 6.9 6.9 5.4 6.6 4.8c-.2-.4-.5-.4-.7-.4H5.3c-.2 0-.6.1-.9.4C4.1 5.1 3 6.2 3 8.3c0 2.2 1.6 4.3 1.8 4.6.2.3 3.1 4.8 7.6 6.5.5.2.9.3 1.2.4.5.2 1 .1 1.4-.1.4-.2 1.3-1 1.5-2 .2-.9.2-1.7.1-1.9-.1-.2-.3-.3-.6-.5z" fill="white"/></svg>
+          Falar com um Especialista
+        </a>
+        <a href="#pilares" class="btn btn-outline-white">Por que a MSA?</a>
+      </div>
+      <div class="hero-divider" data-p="c" data-pd="7"></div>
+      <div class="hero-trust" data-p="b" data-pd="8">
+        <div class="hero-trust-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5h4l-3 2.5 1 4L7 9 3.5 11.5l1-4L2 5h4Z" fill="white"/></svg>4+ anos de mercado</div>
+        <div class="hero-trust-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a6 6 0 1 0 0 12A6 6 0 0 0 7 1zm0 11A5 5 0 1 1 7 2a5 5 0 0 1 0 10zm.5-8H6.5v5l3.5 2 .5-.8-3-.8V4z" fill="white"/></svg>200+ empresas</div>
+        <div class="hero-trust-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C3.7 1 1 3.7 1 7s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm-.5 9l-3-3 1-1 2 2 4-4 1 1-5 5z" fill="white"/></svg>98% satisfação</div>
+      </div>
+    </div>
+    <!-- CARD visual -->
+    <div style="position:relative">
+      <div class="hero-float hero-float-a" data-p="tr" data-pd="4">
+        <div class="hf-ico" style="background:rgba(74,222,128,.15)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 13L7 8l3 3 5-7" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="hf-txt"><strong>Economia Fiscal</strong><span>↑ 32% este trimestre</span></div>
+      </div>
+      <div class="hero-card" data-p="card" data-pd="3">
+        <div class="hc-head">
+          <span class="hc-label">Desempenho Financeiro</span>
+          <div class="hc-badge"><div class="hc-badge-dot"></div>Ativo</div>
+        </div>
+        <div class="hc-big">R$4.2M<span>/ano</span></div>
+        <div class="hc-desc">Em recursos gerenciados para nossos clientes</div>
+        <div class="hc-bars">
+          <div class="hc-bar-row">
+            <div class="hc-bar-top"><span>Planejamento Tributário</span><span>+32%</span></div>
+            <div class="hc-bar-track"><div class="hc-bar-fill b1" style="--w:82%"></div></div>
+          </div>
+          <div class="hc-bar-row">
+            <div class="hc-bar-top"><span>Conformidade Fiscal</span><span>98%</span></div>
+            <div class="hc-bar-track"><div class="hc-bar-fill b2" style="--w:98%"></div></div>
+          </div>
+          <div class="hc-bar-row">
+            <div class="hc-bar-top"><span>Satisfação de Clientes</span><span>4.9/5</span></div>
+            <div class="hc-bar-track"><div class="hc-bar-fill b3" style="--w:90%"></div></div>
+          </div>
+        </div>
+        <div class="hc-kpis">
+          <div class="hc-kpi"><span class="hc-kpi-val green">+24%</span><span class="hc-kpi-lbl">Crescimento</span></div>
+          <div class="hc-kpi"><span class="hc-kpi-val">200+</span><span class="hc-kpi-lbl">Clientes</span></div>
+          <div class="hc-kpi"><span class="hc-kpi-val green">4.9★</span><span class="hc-kpi-lbl">Avaliação</span></div>
+        </div>
+      </div>
+      <div class="hero-float hero-float-b" data-p="bl" data-pd="5">
+        <div class="hf-ico" style="background:rgba(200,168,75,.15)">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L11 6.5L16 7.3L12.5 10.7L13.4 16L9 13.5L4.6 16L5.5 10.7L2 7.3L7 6.5Z" fill="#C8A84B"/></svg>
+        </div>
+        <div class="hf-txt"><strong>Transição Garantida</strong><span>Migramos tudo por você</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-ticker">
+    <div class="ticker-wrap">
+      <span class="ticker-item"><span class="td"></span>Contabilidade Gerencial</span>
+      <span class="ticker-item"><span class="td"></span>Planejamento Tributário</span>
+      <span class="ticker-item"><span class="td"></span>Departamento Pessoal</span>
+      <span class="ticker-item"><span class="td"></span>Consultoria Financeira</span>
+      <span class="ticker-item"><span class="td"></span>Abertura de Empresas</span>
+      <span class="ticker-item"><span class="td"></span>Regularização Fiscal</span>
+      <span class="ticker-item"><span class="td"></span>Gestão Societária</span>
+      <span class="ticker-item"><span class="td"></span>Auditoria Interna</span>
+      <span class="ticker-item"><span class="td"></span>Contabilidade Gerencial</span>
+      <span class="ticker-item"><span class="td"></span>Planejamento Tributário</span>
+      <span class="ticker-item"><span class="td"></span>Departamento Pessoal</span>
+      <span class="ticker-item"><span class="td"></span>Consultoria Financeira</span>
+      <span class="ticker-item"><span class="td"></span>Abertura de Empresas</span>
+      <span class="ticker-item"><span class="td"></span>Regularização Fiscal</span>
+      <span class="ticker-item"><span class="td"></span>Gestão Societária</span>
+      <span class="ticker-item"><span class="td"></span>Auditoria Interna</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PILARES ══ -->
+<section class="pilares" id="pilares" aria-label="Por que a MSA">
+  <div class="pilares-in">
+    <div class="sec-head">
+      <div class="tag tag-navy" data-p="clip" data-pd="0"><span class="dot"></span>Por Que a MSA</div>
+      <h2 class="sec-h2" data-p="t" data-pd="1">Mais do que uma contabilidade — um parceiro que te conhece de verdade</h2>
+      <p class="sec-p" data-p="b" data-pd="2">Sabemos que cada empresa é única. Por isso, nossa atuação é construída sobre três pilares que eliminam suas maiores dúvidas na hora de contratar.</p>
+    </div>
+    <div class="pilares-grid">
+      <div class="pilar-card" data-p="bl" data-pd="2">
+        <div class="pilar-num">01</div>
+        <div class="pilar-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#D0DCF1" stroke-width="1.8"/><path d="M9 13c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z" stroke="#C8A84B" stroke-width="1.8"/></svg>
+        </div>
+        <h3 class="pilar-title">Serviço Personalizado para o Seu Negócio</h3>
+        <p class="pilar-text">Nada de pacotes genéricos. Entendemos seu setor, seu porte e seus objetivos para construir um plano contábil e fiscal que realmente faz sentido para a sua realidade — do MEI ao médio porte.</p>
+        <div class="pilar-highlight">Adaptado ao seu nicho e tamanho</div>
+      </div>
+      <div class="pilar-card featured" data-p="b" data-pd="3">
+        <div class="pilar-num">02</div>
+        <div class="pilar-icon" style="background:rgba(200,168,75,.15)">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3L23 8V14C23 19.5 18.5 24.5 13 26C7.5 24.5 3 19.5 3 14V8L13 3Z" stroke="#C8A84B" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 13l3 3 5-5" stroke="#C8A84B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="pilar-title">Transição Descomplicada — Nós Cuidamos de Tudo</h3>
+        <p class="pilar-text">Preocupado com a burocracia de mudar de contador? A MSA assume 100% do processo de migração: contatos com o escritório anterior, transferência de documentação e regularização de pendências. Você não precisa fazer nada além de dizer "sim".</p>
+        <div class="pilar-highlight">✓ Migramos tudo sem dor de cabeça para você</div>
+      </div>
+      <div class="pilar-card" data-p="br" data-pd="4">
+        <div class="pilar-num">03</div>
+        <div class="pilar-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="3" width="20" height="16" rx="3" stroke="#D0DCF1" stroke-width="1.8"/><path d="M8 23h10M13 19v4" stroke="#D0DCF1" stroke-width="1.8" stroke-linecap="round"/><path d="M8 12l3 3 7-7" stroke="#C8A84B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="pilar-title">Metodologia Moderna e Customer Success</h3>
+        <p class="pilar-text">Usamos ferramentas digitais de ponta e um modelo de Customer Success para acompanhar de perto cada cliente. Relatórios claros, reuniões periódicas e uma equipe que antecipa problemas antes que eles apareçam.</p>
+        <div class="pilar-highlight">Tecnologia a serviço do seu crescimento</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVIÇOS ══ -->
+<section class="servicos" id="servicos" aria-label="Nossos serviços">
+  <div class="servicos-in">
+    <div class="sec-head">
+      <div class="tag tag-navy" data-p="clip" data-pd="0"><span class="dot"></span>Nossos Serviços</div>
+      <h2 class="sec-h2" data-p="t" data-pd="1">Cobertura total — do operacional ao estratégico</h2>
+      <p class="sec-p" data-p="b" data-pd="2">Fazemos o básico com excelência e o estratégico com profundidade. Cada serviço é entregue por especialistas dedicados ao seu negócio.</p>
+    </div>
+    <div class="servicos-layout">
+      <!-- OPERACIONAL -->
+      <div class="serv-block" data-p="l" data-pd="2">
+        <div class="serv-block-head op">
+          <div class="serv-block-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="3" width="16" height="16" rx="2.5" stroke="white" stroke-width="1.7"/><path d="M7 11h8M7 7.5h8M7 14.5h4" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div><div class="serv-block-title">Bloco Operacional</div><div class="serv-block-sub">O que toda empresa precisa — feito com perfeição</div></div>
+        </div>
+        <div class="serv-list">
+          <div class="serv-item" data-p="l" data-pd="3">
+            <div class="serv-item-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="#073673" stroke-width="1.6"/><path d="M5 9h8M5 6h8M5 12h4" stroke="#073673" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div class="serv-item-body"><strong>Contabilidade Gerencial</strong><span>Escrituração, balanços, demonstrações financeiras e relatórios para tomada de decisão.</span></div>
+          </div>
+          <div class="serv-item" data-p="l" data-pd="4">
+            <div class="serv-item-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="12" rx="2" stroke="#073673" stroke-width="1.6"/><path d="M2 7.5h14M6 3v1.5M12 3v1.5M5 11h4" stroke="#073673" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div class="serv-item-body"><strong>Departamento Pessoal</strong><span>Folha de pagamento, admissões, demissões e obrigações trabalhistas com total conformidade.</span></div>
+          </div>
+          <div class="serv-item" data-p="l" data-pd="5">
+            <div class="serv-item-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L16 5.5V10C16 13.8 12.8 17.3 9 18C5.2 17.3 2 13.8 2 10V5.5L9 2Z" stroke="#073673" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 10l2.5 2.5L12 7" stroke="#073673" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="serv-item-body"><strong>Obrigações Acessórias</strong><span>SPED, ECF, DCTF, eSocial e todas as declarações nos prazos corretos, sem multas.</span></div>
+          </div>
+          <div class="serv-item" data-p="l" data-pd="6">
+            <div class="serv-item-ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3h12l-1.5 10H4.5L3 3z" stroke="#073673" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 8h6M9 5.5V8" stroke="#073673" stroke-width="1.5" stroke-linecap="round"/><circle cx="6.5" cy="15.5" r="1" fill="#073673"/><circle cx="11.5" cy="15.5" r="1" fill="#073673"/></svg></div>
+            <div class="serv-item-body"><strong>Abertura e Regularização</strong><span>Constituição, alteração e encerramento de empresas. Regularização de débitos fiscais e societários.</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- ESTRATÉGICO -->
+      <div class="serv-block" data-p="r" data-pd="2">
+        <div class="serv-block-head st">
+          <div class="serv-block-ico"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 18L7 12L11 15L15 8L19 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="5" r="2" fill="white" opacity=".6"/></svg></div>
+          <div><div class="serv-block-title">Bloco Estratégico</div><div class="serv-block-sub">O que te diferencia — e justifica um ticket maior</div></div>
+        </div>
+        <div class="serv-list">
+          <div class="serv-item" data-p="r" data-pd="3">
+            <div class="serv-item-ico" style="background:rgba(200,168,75,.12)"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2L16 5.5V10C16 13.8 12.8 17.3 9 18C5.2 17.3 2 13.8 2 10V5.5L9 2Z" stroke="#C8A84B" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 9l2 2 4-4" stroke="#C8A84B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="serv-item-body"><strong>Planejamento Tributário</strong><span>Análise completa do regime tributário ideal. Economize legalmente e de forma recorrente.</span></div>
+          </div>
+          <div class="serv-item" data-p="r" data-pd="4">
+            <div class="serv-item-ico" style="background:rgba(200,168,75,.12)"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#C8A84B" stroke-width="1.6"/><path d="M9 5v4l3 2" stroke="#C8A84B" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div class="serv-item-body"><strong>Diagnóstico Fiscal</strong><span>Identificamos oportunidades de redução de carga tributária e riscos não percebidos no seu negócio.</span></div>
+          </div>
+          <div class="serv-item" data-p="r" data-pd="5">
+            <div class="serv-item-ico" style="background:rgba(200,168,75,.12)"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 17V7l6-5 6 5v10H3z" stroke="#C8A84B" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 17v-5h6v5" stroke="#C8A84B" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+            <div class="serv-item-body"><strong>Consultoria Financeira</strong><span>Fluxo de caixa, valuation, estruturação para captação e assessoria para crescimento sustentável.</span></div>
+          </div>
+          <div class="serv-item" data-p="r" data-pd="6">
+            <div class="serv-item-ico" style="background:rgba(200,168,75,.12)"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 14V6L9 2l6 4v8L9 16 3 14z" stroke="#C8A84B" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 16V10M3 6l6 4M15 6l-6 4" stroke="#C8A84B" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+            <div class="serv-item-body"><strong>Auditoria Interna</strong><span>Avaliação independente dos processos contábeis e controles internos para garantir integridade.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MANIFESTO ══ -->
+<section class="manifesto" id="sobre-nos" aria-label="Sobre a MSA">
+  <div class="manifesto-lines" aria-hidden="true"></div>
+  <div class="manifesto-in">
+    <div class="manifesto-photo-wrap" data-p="tl" data-pd="1">
+      <div class="manifesto-photo-fallback">
+        <div class="initials">MS</div>
+        <span style="font-size:.8rem;color:rgba(208,220,241,.35);text-align:center;padding:0 1rem">Adicione a foto do<br/>sócio-fundador aqui</span>
+      </div>
+      <div class="manifesto-photo-cap">
+        <strong>Sócio-Fundador</strong>
+        <span>Martins Soares &amp; Associados</span>
+      </div>
+    </div>
+    <div class="manifesto-content">
+      <div class="tag tag-sky" style="margin-bottom:1.5rem" data-p="clip" data-pd="0"><span class="dot"></span>Manifesto</div>
+      <span class="manifesto-quote-mark" data-p="r" data-pd="1">"</span>
+      <blockquote class="manifesto-quote" data-p="r" data-pd="2">
+        Contabilidade não é só obrigação — é a bússola financeira que guia o crescimento de uma empresa com segurança e ética.
+      </blockquote>
+      <p class="manifesto-text" data-p="r" data-pd="3">Fundamos a MSA em 2022 com um propósito claro: ser o parceiro que o empresário do Sertão merecia, mas ainda não tinha. Não um escritório que assina documentos — mas um time que entende de negócios, antecipa riscos e celebra cada conquista junto com nossos clientes.</p>
+      <p class="manifesto-text" data-p="r" data-pd="4" style="margin-bottom:1.5rem">Nosso compromisso é com a transparência, com o cumprimento ético de todas as obrigações e com a entrega de inteligência financeira que realmente transforma o futuro das empresas que nos confiam sua contabilidade.</p>
+      <div class="manifesto-values" data-p="b" data-pd="5">
+        <div class="manifesto-val"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.8 4.5H11.5L8.5 6.7L9.6 10.3L6.5 8.3L3.4 10.3L4.5 6.7L1.5 4.5H5.2Z" fill="#C8A84B"/></svg>Ética e Transparência</div>
+        <div class="manifesto-val"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.8 4.5H11.5L8.5 6.7L9.6 10.3L6.5 8.3L3.4 10.3L4.5 6.7L1.5 4.5H5.2Z" fill="#C8A84B"/></svg>Rigor Técnico</div>
+        <div class="manifesto-val"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.8 4.5H11.5L8.5 6.7L9.6 10.3L6.5 8.3L3.4 10.3L4.5 6.7L1.5 4.5H5.2Z" fill="#C8A84B"/></svg>Parceria de longo prazo</div>
+        <div class="manifesto-val"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L7.8 4.5H11.5L8.5 6.7L9.6 10.3L6.5 8.3L3.4 10.3L4.5 6.7L1.5 4.5H5.2Z" fill="#C8A84B"/></svg>Resultados Mensuráveis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROVA SOCIAL ══ -->
+<section class="prova" id="clientes" aria-label="Prova social">
+  <div class="prova-in">
+    <div class="sec-head">
+      <div class="tag tag-navy" data-p="clip" data-pd="0"><span class="dot"></span>Prova Social</div>
+      <h2 class="sec-h2" data-p="t" data-pd="1">Números que falam por si — e empresas que confirmam</h2>
+      <p class="sec-p" data-p="b" data-pd="2">Solidez comercial construída cliente a cliente, resultado a resultado.</p>
+    </div>
+    <div class="numeros-strip">
+      <div class="num-card" data-p="tl" data-pd="2"><div class="num-val">4<span>+</span></div><div class="num-lbl">Anos de mercado<br/>e solidez</div></div>
+      <div class="num-card" data-p="tr" data-pd="3"><div class="num-val">200<span>+</span></div><div class="num-lbl">Empresas atendidas<br/>em Quixeramobim e região</div></div>
+      <div class="num-card" data-p="bl" data-pd="4"><div class="num-val">98<span>%</span></div><div class="num-lbl">Índice de satisfação<br/>comprovado</div></div>
+      <div class="num-card" data-p="br" data-pd="5"><div class="num-val">4<span>+</span></div><div class="num-lbl">Especialistas<br/>dedicados ao seu negócio</div></div>
+    </div>
+    <div class="clientes-marquee">
+      <div class="sec-head" style="margin-bottom:2rem">
+        <div class="tag tag-navy" data-p="clip" data-pd="0"><span class="dot"></span>Clientes de Sucesso</div>
+        <h3 class="sec-h2" style="font-size:1.6rem" data-p="t" data-pd="1">Empresas que crescem com quem entende de números</h3>
+      </div>
+      <div class="marquee-wrap" data-p="l" data-pd="2"><div class="marquee-track left" id="row1"></div></div>
+      <div class="marquee-wrap" data-p="r" data-pd="3"><div class="marquee-track right" id="row2"></div></div>
+      <p style="text-align:center;font-size:.75rem;color:var(--gray);margin-top:1.25rem;opacity:.7" data-p="b" data-pd="4">Coloque os logos reais em <code style="background:var(--off);padding:.15rem .4rem;border-radius:4px">clientes/logo-cliente-N.png</code> e atualize os dados no bloco JS.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTATO — SEM FORMULÁRIO ══ -->
+<section class="contato" id="contato" aria-label="Entre em contato">
+  <div class="contato-in">
+    <div class="tag tag-navy" data-p="clip" data-pd="0"><span class="dot"></span>Entre em Contato</div>
+    <h2 class="contato-h2" data-p="l" data-pd="1">Vamos construir o futuro da sua empresa juntos</h2>
+    <p class="contato-p" data-p="l" data-pd="2">Nossa equipe está pronta para entender as suas necessidades e apresentar a melhor solução. Sem burocracia, sem enrolação.</p>
+    <div class="cinfo-list">
+      <div class="cinfo" data-p="bl" data-pd="2">
+        <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 11C12 11 13.5 9.5 13.5 7.5S12 4 10 4 6.5 5.5 6.5 7.5 8 11 10 11z" stroke="white" stroke-width="1.7"/><path d="M3 18c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <div class="cinfo-body"><strong>Endereço</strong><span>R. Dias Ferreira, 213 — Centro, Quixeramobim — CE</span></div>
+      </div>
+      <a href="tel:+5588999999999" class="cinfo" data-p="l" data-pd="3">
+        <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4H8l2 4.5-2 1.5c.9 1.9 2.1 3.1 4 4l1.5-2L18 14v4S16 18 13 16C8 13 4 7 4 4z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+        <div class="cinfo-body"><strong>Telefone / WhatsApp</strong><span>(88) 9 9999-9999 · (88) 3000-0000</span></div>
+      </a>
+      <a href="mailto:sistconfiscal@gmail.com" class="cinfo" data-p="l" data-pd="4">
+        <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="13" rx="2" stroke="white" stroke-width="1.7"/><path d="M2 8l8 5.5L18 8" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <div class="cinfo-body"><strong>E-mail</strong><span>sistconfiscal@gmail.com</span></div>
+      </a>
+      <div class="cinfo" data-p="bl" data-pd="5">
+        <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.7"/><path d="M10 6v4l3 2" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <div class="cinfo-body"><strong>Horário</strong><span>Segunda a Sexta, das 8h às 18h</span></div>
+      </div>
+    </div>
+    <div class="contato-cta" data-p="b" data-pd="6">
+      <a href="https://wa.me/5588999999999?text=Olá!%20Gostaria%20de%20uma%20consultoria%20gratuita." target="_blank" rel="noopener" class="btn btn-wa">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17.5 2.9C15.6 1 13.1 0 10.5 0 4.8 0 .2 4.6.2 10.3c0 1.8.5 3.6 1.4 5.1L0 20l4.8-1.5c1.5.8 3.1 1.2 4.8 1.2h.1c5.6 0 10.2-4.6 10.2-10.3C20 7 18.9 4.8 17.5 2.9zm-7 15.8h-.1c-1.5 0-3-.4-4.3-1.1l-.3-.2-3.2 1 .9-3.2-.2-.3c-.8-1.4-1.2-2.9-1.2-4.5 0-4.7 3.8-8.5 8.5-8.5 2.3 0 4.4.9 5.9 2.5 1.5 1.6 2.4 3.7 2.4 5.9.1 4.8-3.7 8.4-8.4 8.4zm4.7-6.3c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8.9-.1.2-.3.2-.6 0-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.6-1.4-1.8-.1-.3 0-.4.1-.5l.4-.5c.1-.1.1-.3.2-.4 0-.1 0-.3-.1-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.2-.9.9-.9 2.1 0 1.2.9 2.4 1 2.6.1.2 1.8 2.7 4.3 3.8.6.3 1.1.4 1.5.5.6.2 1.2.2 1.7.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1 .1-1.2-.1-.1-.3-.2-.6-.3z" fill="white"/></svg>
+        Falar pelo WhatsApp
+      </a>
+      <a href="mailto:sistconfiscal@gmail.com" class="btn btn-navy">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="12" rx="2" stroke="white" stroke-width="1.6"/><path d="M2 7l7 4.5L16 7" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Enviar E-mail
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-in">
+    <div class="footer-top">
+      <div class="footer-brand" data-p="bl" data-pd="1">
+        <img src="logo.png" alt="MSA" style="height:44px;width:auto;object-fit:contain"/>
+        <p>Há mais de 4 anos sendo parceiros estratégicos de empresas que buscam crescer com segurança, ética e inteligência financeira em Quixeramobim e região.</p>
+        <p class="footer-cnpj">CNPJ: XX.XXX.XXX/0001-XX</p>
+      </div>
+      <div class="footer-col" data-p="b" data-pd="2">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#pilares">Por Que Nós</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#sobre-nos">Sobre Nós</a></li>
+          <li><a href="#clientes">Clientes</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" data-p="b" data-pd="3">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Contabilidade Gerencial</a></li>
+          <li><a href="#servicos">Planejamento Tributário</a></li>
+          <li><a href="#servicos">Departamento Pessoal</a></li>
+          <li><a href="#servicos">Diagnóstico Fiscal</a></li>
+          <li><a href="#servicos">Auditoria Interna</a></li>
+          <li><a href="#servicos">Abertura de Empresas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" data-p="br" data-pd="4">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="tel:+5588999999999">(88) 9 9999-9999</a></li>
+          <li><a href="mailto:sistconfiscal@gmail.com">sistconfiscal@gmail.com</a></li>
+          <li><a href="#contato">R. Dias Ferreira, 213<br/>Quixeramobim — CE</a></li>
+        </ul>
+        <div class="footer-socials" style="margin-top:1.25rem">
+          <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5H5V14H2V5ZM3.5 4C4.3 4 5 3.3 5 2.5S4.3 1 3.5 1 2 1.7 2 2.5 2.7 4 3.5 4ZM7 5H10V6.5C10.5 5.5 11.8 5 13 5C15.2 5 16 6.5 16 9V14H13V9.5C13 8.5 12.5 8 11.7 8S10 8.5 10 10V14H7V5Z" fill="white" opacity=".6"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="4" stroke="white" stroke-width="1.4" opacity=".6"/><circle cx="8" cy="8" r="3" stroke="white" stroke-width="1.4" opacity=".6"/><circle cx="12" cy="4" r="1" fill="white" opacity=".6"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9 2C7 2 6 3 6 5V7H4V10H6V16H9V10H11.5L12 7H9V5.5C9 5 9.3 5 10 5H12V2.3C11.5 2.1 10.4 2 9 2Z" fill="white" opacity=".6"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 MSA — Martins Soares &amp; Associados. Todos os direitos reservados.</p>
+      <div class="footer-legal"><a href="#">Política de Privacidade</a><a href="#">Termos de Uso</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   CLIENTES — edite aqui com dados reais
+══════════════════════════════════════ */
+const CLIENTES = [
+  { logo:'clientes/logo-cliente-1.png',  abbr:'FC', nome:'Fernandes Comércio Ltda.',  segmento:'Comércio Varejista', desc:'A MSA transformou nossa gestão fiscal e nos ajudou a economizar significativamente em impostos.' },
+  { logo:'clientes/logo-cliente-2.png',  abbr:'AS', nome:'Agro Sertão Produções',      segmento:'Agronegócio',         desc:'Parceria essencial para estruturar o planejamento tributário da nossa cooperativa com segurança.' },
+  { logo:'clientes/logo-cliente-3.png',  abbr:'MS', nome:'Módulo Saúde Clínicas',      segmento:'Saúde e Bem-estar',   desc:'Profissionalismo e agilidade no departamento pessoal nos permitiram focar no atendimento médico.' },
+  { logo:'clientes/logo-cliente-4.png',  abbr:'TQ', nome:'TechQuix Sistemas',          segmento:'Tecnologia',          desc:'A consultoria financeira da MSA foi decisiva para nossa captação de investimentos em 2024.' },
+  { logo:'clientes/logo-cliente-5.png',  abbr:'CE', nome:'Constrular Engenharia',      segmento:'Construção Civil',    desc:'Regularização completa e gestão de folha com zero erros em dois anos de parceria.' },
+  { logo:'clientes/logo-cliente-6.png',  abbr:'BA', nome:'Bella Aroma Estética',       segmento:'Beleza e Estética',   desc:'Desde a abertura da empresa até hoje, a MSA cuida de tudo com excelência e transparência.' },
+  { logo:'clientes/logo-cliente-7.png',  abbr:'NF', nome:'Norte Frio Refrigeração',   segmento:'Serviços Técnicos',   desc:'Abertura e organização da empresa em tempo recorde, com toda conformidade legal assegurada.' },
+  { logo:'clientes/logo-cliente-8.png',  abbr:'VP', nome:'Verde Pasto Pecuária',       segmento:'Pecuária',            desc:'Planejamento tributário que nos trouxe economia real sem abrir mão de nenhuma conformidade.' },
+  { logo:'clientes/logo-cliente-9.png',  abbr:'LD', nome:'Lima e Dias Advocacia',      segmento:'Jurídico',            desc:'A MSA cuida de toda nossa contabilidade com precisão, nos deixando livres para o que importa.' },
+  { logo:'clientes/logo-cliente-10.png', abbr:'PX', nome:'Peixaria Real Ltda.',        segmento:'Alimentação',         desc:'Crescemos três vezes em dois anos com a segurança de ter a MSA cuidando das finanças.' },
+  { logo:'clientes/logo-cliente-11.png', abbr:'AM', nome:'Arte e Molduras Design',     segmento:'Decoração',           desc:'Gestão impecável da folha e orientação tributária que mudou a realidade do nosso negócio.' },
+  { logo:'clientes/logo-cliente-12.png', abbr:'SC', nome:'Sol e Campo Turismo',        segmento:'Turismo',             desc:'Regularização e contabilidade em dia nos deram confiança para expandir para novas cidades.' },
+];
+
+function buildClientCard(c) {
+  const safe = c.nome.replace(/'/g,'').replace(/(.{1,14})(\s|$)/g,'$1<br>').trim();
+  return `<div class="client-card">
+    <div class="client-logo-wrap">
+      <img src="${c.logo}" alt="${c.nome}"
+        onerror="this.style.display='none';this.parentNode.innerHTML='<div class=\\'client-placeholder\\'><div class=\\'client-abbr\\'>${c.abbr}</div><div class=\\'client-pname\\'>${safe}</div></div>'">
+    </div>
+    <div class="client-name">${c.nome}</div>
+    <div class="client-seg">${c.segmento}</div>
+    <p class="client-testimonial">${c.desc}</p>
+  </div>`;
+}
+
+const mid = Math.ceil(CLIENTES.length / 2);
+const r1  = document.getElementById('row1');
+const r2  = document.getElementById('row2');
+[...CLIENTES.slice(0,mid),...CLIENTES.slice(0,mid)].forEach(c => r1.insertAdjacentHTML('beforeend', buildClientCard(c)));
+[...CLIENTES.slice(mid),...CLIENTES.slice(mid)].forEach(c => r2.insertAdjacentHTML('beforeend', buildClientCard(c)));
+
+/* ── NAVBAR ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive:true });
+
+/* ── MOBILE MENU ── */
+const hamburger = document.getElementById('hamburger');
+const navMob = document.getElementById('nav-mob');
+hamburger.addEventListener('click', () => {
+  const open = navMob.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open.toString());
+});
+navMob.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+  navMob.classList.remove('open');
+  hamburger.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+}));
+
+/* ══════════════════════════════════════
+   PUZZLE OBSERVER
+   Dispara .snap quando elemento entra no viewport.
+   Threshold menor p/ elementos fora do hero
+   (hero usa disparo imediato)
+══════════════════════════════════════ */
+const puzzleObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('snap');
+      puzzleObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('[data-p]').forEach(el => puzzleObs.observe(el));
+
+/* Hero: disparo imediato para peças visíveis na tela sem precisar scrollar */
+const heroSection = document.getElementById('inicio');
+const heroObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Dispara todas as peças do hero com pequeno delay para dar tempo ao DOM
+      setTimeout(() => {
+        heroSection.querySelectorAll('[data-p]').forEach(el => el.classList.add('snap'));
+      }, 80);
+      heroObs.disconnect();
+    }
+  });
+}, { threshold: 0.01 });
+heroObs.observe(heroSection);
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    e.preventDefault();
+    t.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+</script>
+</body>
+</html>
