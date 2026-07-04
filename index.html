@@ -178,7 +178,6 @@
     .pilar-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));border-radius:0 0 var(--r-lg) var(--r-lg);transform:scaleX(0);transform-origin:left;transition:transform var(--t)}
     .pilar-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(5,28,63,.1)}
     .pilar-card:hover::after{transform:scaleX(1)}
-    /* ALTERAÇÃO 1: números dos pilares em amarelo/gold */
     .pilar-num{font-family:var(--ff-display);font-size:3.5rem;font-weight:700;line-height:1;color:var(--gold);opacity:.35;margin-bottom:.75rem}
     .pilar-icon{width:52px;height:52px;background:var(--navy);border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
     .pilar-title{font-family:var(--ff-display);font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:.65rem;line-height:1.2}
@@ -245,7 +244,6 @@
     .marquee-wrap:hover .marquee-track{animation-play-state:paused}
     @keyframes mLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
     @keyframes mRight{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-    /* ALTERAÇÃO 5: cards de clientes sem descrição, logo e nome com mais destaque */
     .client-card{flex-shrink:0;width:200px;background:var(--off);border:1px solid rgba(5,28,63,.07);border-radius:var(--r-lg);padding:1.25rem 1rem;transition:transform var(--t),box-shadow var(--t),border-color var(--t);display:flex;flex-direction:column;align-items:center;gap:.75rem}
     .client-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:rgba(5,28,63,.14)}
     .client-logo-wrap{width:100%;height:70px;background:var(--white);border:1px solid rgba(5,28,63,.06);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:all var(--t)}
@@ -258,6 +256,43 @@
     .client-name{font-size:.88rem;font-weight:700;color:var(--navy);text-align:center;line-height:1.3}
     .client-seg{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);opacity:.65;text-align:center}
 
+    .feedbacks{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--dark);position:relative;overflow:hidden}
+    .feedbacks-lines{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(208,220,241,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(208,220,241,.03) 1px,transparent 1px);background-size:56px 56px}
+    .feedbacks-glow{position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:70%;height:60%;background:radial-gradient(ellipse at center,rgba(200,168,75,.08),transparent 70%);z-index:0;pointer-events:none}
+    .feedbacks-in{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+    .feedbacks .sec-h2{color:var(--white)}
+    .feedbacks .sec-p{color:rgba(208,220,241,.55)}
+    .feedback-marquee-wrap{position:relative;overflow:hidden;margin-top:1rem;padding:1.5rem 0}
+    .feedback-marquee-wrap::before,.feedback-marquee-wrap::after{content:'';position:absolute;top:0;bottom:0;width:110px;z-index:2;pointer-events:none}
+    .feedback-marquee-wrap::before{left:0;background:linear-gradient(to right,var(--dark),transparent)}
+    .feedback-marquee-wrap::after{right:0;background:linear-gradient(to left,var(--dark),transparent)}
+    .feedback-marquee-track{display:flex;gap:1.25rem;width:max-content;padding:.5rem .5rem;animation:feedbackScroll 46s linear infinite}
+    .feedback-marquee-wrap:hover .feedback-marquee-track{animation-play-state:paused}
+    @keyframes feedbackScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .feedback-card{flex-shrink:0;width:320px;background:rgba(255,255,255,.04);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(208,220,241,.12);border-radius:var(--r-lg);padding:1.75rem;display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden;transform:perspective(800px);transition:transform .15s var(--ease),border-color var(--t),box-shadow var(--t)}
+    .feedback-card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%),rgba(200,168,75,.18),transparent 70%);opacity:0;transition:opacity .4s var(--ease);pointer-events:none}
+    .feedback-card:hover::before{opacity:1}
+    .feedback-card:hover{border-color:rgba(200,168,75,.3);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+    .feedback-card.in-focus{border-color:rgba(200,168,75,.5);box-shadow:0 20px 52px rgba(0,0,0,.38),0 0 0 1px rgba(200,168,75,.12) inset}
+    .feedback-card.in-focus .feedback-quote-ico{opacity:1;transform:scale(1.1)}
+    .feedback-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
+    .feedback-quote-ico{color:var(--gold);opacity:.75;flex-shrink:0;transition:transform .3s var(--spring),opacity var(--t)}
+    .feedback-verified{display:flex;align-items:center;gap:.3rem;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#4ade80;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.22);border-radius:var(--r-pill);padding:.2rem .55rem;flex-shrink:0}
+    .feedback-stars{display:flex;gap:.15rem}
+    .feedback-stars svg{width:13px;height:13px;flex-shrink:0}
+    .feedback-text{font-size:.92rem;color:rgba(255,255,255,.82);line-height:1.7;flex-grow:1;position:relative;z-index:1}
+    .feedback-foot{display:flex;align-items:center;gap:.75rem;padding-top:1rem;border-top:1px solid rgba(208,220,241,.08);position:relative;z-index:1}
+    .feedback-avatar{width:40px;height:40px;border-radius:50%;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-weight:700;color:var(--gold-l);font-size:.9rem;flex-shrink:0}
+    .feedback-name{font-size:.85rem;font-weight:700;color:var(--white);line-height:1.3}
+    .feedback-company{font-size:.7rem;color:rgba(208,220,241,.45);text-transform:uppercase;letter-spacing:.06em}
+    @media(prefers-reduced-motion:reduce){
+      .feedback-card{transform:none!important}
+    }
+    @media(max-width:768px){
+      .feedback-card{width:270px}
+      .feedback-marquee-wrap::before,.feedback-marquee-wrap::after{width:50px}
+    }
+
     .contato{padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3rem);background:var(--off)}
     .contato-in{max-width:820px;margin:0 auto}
     .contato-h2{font-family:var(--ff-display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--navy);line-height:1.2;margin:1rem 0 1rem}
@@ -268,7 +303,6 @@
     .cinfo-ico{width:42px;height:42px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .cinfo-body strong{display:block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:.2rem}
     .cinfo-body span{font-size:.88rem;color:var(--navy)}
-    /* ALTERAÇÃO 4: card de horários com melhor estética */
     .cinfo-horario{align-items:flex-start}
     .cinfo-horario .cinfo-ico{margin-top:.05rem}
     .horario-grid{display:grid;grid-template-columns:auto auto;gap:.2rem .75rem;align-items:center}
@@ -416,14 +450,14 @@
             <div class="hc-bar-track"><div class="hc-bar-fill b2" style="--w:98%"></div></div>
           </div>
           <div class="hc-bar-row">
-            <div class="hc-bar-top"><span>Satisfação de Clientes</span><span>4.9/5</span></div>
+            <div class="hc-bar-top"><span>Satisfação de Clientes</span><span>4.8/5</span></div>
             <div class="hc-bar-track"><div class="hc-bar-fill b3" style="--w:90%"></div></div>
           </div>
         </div>
         <div class="hc-kpis">
           <div class="hc-kpi"><span class="hc-kpi-val green">+24%</span><span class="hc-kpi-lbl">Crescimento</span></div>
           <div class="hc-kpi"><span class="hc-kpi-val">200+</span><span class="hc-kpi-lbl">Clientes</span></div>
-          <div class="hc-kpi"><span class="hc-kpi-val green">4.9★</span><span class="hc-kpi-lbl">Avaliação</span></div>
+          <div class="hc-kpi"><span class="hc-kpi-val green">4.8★</span><span class="hc-kpi-lbl">Avaliação</span></div>
         </div>
       </div>
       <div class="hero-float hero-float-b" data-p="bl" data-pd="5">
@@ -579,7 +613,6 @@
     </div>
     <div class="manifesto-content">
       <div class="tag tag-sky" style="margin-bottom:1.5rem" data-p="clip" data-pd="0"><span class="dot"></span>Manifesto</div>
-      <!-- ALTERAÇÃO 2: aspas imediatamente acima do título, sem separação -->
       <div class="manifesto-quote-wrap" data-p="r" data-pd="1">
         <span class="manifesto-quote-mark">"</span>
         <blockquote class="manifesto-quote">
@@ -599,7 +632,6 @@
 </section>
 
 <!-- ══ PROVA SOCIAL ══ -->
-<!-- ALTERAÇÃO 3: numeros-strip com grid 3 colunas (card "4+ especialistas" removido) -->
 <section class="prova" id="clientes" aria-label="Prova social">
   <div class="prova-in">
     <div class="sec-head">
@@ -623,6 +655,22 @@
   </div>
 </section>
 
+<!-- ══ FEEDBACKS ══ -->
+<section class="feedbacks" id="feedbacks" aria-label="Depoimentos de clientes">
+  <div class="feedbacks-lines" aria-hidden="true"></div>
+  <div class="feedbacks-glow" aria-hidden="true"></div>
+  <div class="feedbacks-in">
+    <div class="sec-head">
+      <div class="tag tag-gold" data-p="clip" data-pd="0"><span class="dot"></span>Depoimentos</div>
+      <h2 class="sec-h2" data-p="t" data-pd="1">O que dizem as empresas que confiam na MSA</h2>
+      <p class="sec-p" data-p="b" data-pd="2">Depoimentos reais de clientes que vivem a parceria com a MSA no dia a dia.</p>
+    </div>
+    <div class="feedback-marquee-wrap" data-p="c" data-pd="3">
+      <div class="feedback-marquee-track" id="feedbackRow"></div>
+    </div>
+  </div>
+</section>
+
 <!-- ══ CONTATO ══ -->
 <section class="contato" id="contato" aria-label="Entre em contato">
   <div class="contato-in">
@@ -642,7 +690,6 @@
         <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="13" rx="2" stroke="white" stroke-width="1.7"/><path d="M2 8l8 5.5L18 8" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
         <div class="cinfo-body"><strong>E-mail</strong><span>msa@msacontabilidade.com</span></div>
       </a>
-      <!-- ALTERAÇÃO 4: card de horários com layout visual organizado -->
       <div class="cinfo cinfo-horario" data-p="bl" data-pd="5">
         <div class="cinfo-ico"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.7"/><path d="M10 6v4l3 2" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
         <div class="cinfo-body">
@@ -763,7 +810,6 @@ const CLIENTES = [
   { logo:'/assets/clientes/mw.jpeg', abbr:'MW', nome:'Malwee', segmento:'Moda Geral' },
 ];
 
-/* ALTERAÇÃO 5: buildClientCard sem desc — logo e nome em destaque */
 function buildClientCard(c) {
   const safe = c.nome.replace(/'/g,'');
   return `<div class="client-card">
@@ -781,6 +827,67 @@ const r1  = document.getElementById('row1');
 const r2  = document.getElementById('row2');
 [...CLIENTES.slice(0,mid),...CLIENTES.slice(0,mid)].forEach(c => r1.insertAdjacentHTML('beforeend', buildClientCard(c)));
 [...CLIENTES.slice(mid),...CLIENTES.slice(mid)].forEach(c => r2.insertAdjacentHTML('beforeend', buildClientCard(c)));
+
+/* ── FEEDBACKS ── */
+const FEEDBACKS = [
+  { nome:'Gercival',      empresa:'Cliente MSA',   texto:'O escritório é confiável e sou muito bem atendido.' },
+  { nome:'Doce Maravilha', empresa:'Doceria',       texto:'Ótimo relacionamento com os clientes.' },
+  { nome:'Lira Indústria', empresa:'Indústria',     texto:'Agilidade e responsabilidade.' },
+  { nome:'Flora Pura',     empresa:'Cliente MSA',   texto:'A MSA têm: qualidade no serviço, acompanhamento das finanças, orientação e resolução de problemas.' },
+  { nome:'Karleyane',      empresa:'Cliente MSA',   texto:'MSA é sinônimo de competência e agilidade.' },
+  { nome:'A Engenharia',   empresa:'Engenharia',    texto:'Tenho toda assessoria que uma empresa precisa. Consigo manter contato constante com o escritório.' },
+];
+
+const STAR_ICO = '<svg viewBox="0 0 20 20" fill="#C8A84B"><path d="M10 1.2L12.6 7l6.3.6-4.8 4.2 1.4 6.2L10 14.9 4.5 18l1.4-6.2L1.1 7.6 7.4 7 10 1.2Z"/></svg>';
+
+function buildFeedbackCard(f) {
+  const iniciais = f.nome.split(' ').filter(Boolean).map(p => p[0]).slice(0,2).join('').toUpperCase();
+  return `<div class="feedback-card">
+    <div class="feedback-stars">${STAR_ICO.repeat(5)}</div>
+    <p class="feedback-text">${f.texto}</p>
+    <div class="feedback-foot">
+      <div class="feedback-avatar">${iniciais}</div>
+      <div>
+        <div class="feedback-name">${f.nome}</div>
+        <div class="feedback-company">${f.empresa}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+const feedbackRow = document.getElementById('feedbackRow');
+if (feedbackRow) {
+  [...FEEDBACKS, ...FEEDBACKS].forEach(f => feedbackRow.insertAdjacentHTML('beforeend', buildFeedbackCard(f)));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const feedbackCards = feedbackRow.querySelectorAll('.feedback-card');
+
+  if (!reduceMotion) {
+    /* Spotlight + tilt 3D sutil: o card reage à posição do cursor */
+    feedbackCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const px = (x / r.width) * 100, py = (y / r.height) * 100;
+        const rotY = ((x / r.width) - 0.5) * 8;
+        const rotX = ((y / r.height) - 0.5) * -8;
+        card.style.setProperty('--mx', px + '%');
+        card.style.setProperty('--my', py + '%');
+        card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px)';
+      });
+    });
+
+    /* Destaque do card que está passando pelo centro visível do marquee */
+    const wrap = document.querySelector('.feedback-marquee-wrap');
+    const focusObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => entry.target.classList.toggle('in-focus', entry.isIntersecting));
+    }, { root: wrap, rootMargin: '0px -38% 0px -38%', threshold: 0.6 });
+    feedbackCards.forEach(card => focusObs.observe(card));
+  }
+}
 
 /* ── NAVBAR ── */
 const navbar = document.getElementById('navbar');
